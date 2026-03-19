@@ -1,0 +1,15 @@
+[package]
+name = "cv"
+version = "1.0.0"
+entrypoint = "src/lib.typ"
+authors = ["atalariq <https://github.com/atalariq>"]
+license = "MIT"
+description = "ATS-friendly cv template"
+repository = "https://github.com/atalariq/typst-packages"
+keywords = ["cv", "resume", "ATS"]
+categories = ["cv"]
+exclude = [ ]
+
+[template]
+path = "template"
+entrypoint = "main.typ"

@@ -1,0 +1,10 @@
+[package]
+name = "code"
+version = "1.0.0"
+entrypoint = "code.typ"
+authors = ["atalariq <https://github.com/atalariq>"]
+license = "MIT"
+description = "better codeblock rendering"
+repository = "https://github.com/atalariq/typst-packages"
+keywords = ["code", "sourcecode", "source", "raw"]
+categories = ["components"]

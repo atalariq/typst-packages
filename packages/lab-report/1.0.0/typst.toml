@@ -1,0 +1,16 @@
+[package]
+name = "lab-report"
+version = "1.0.0"
+entrypoint = "src/lib.typ"
+authors = ["atalariq <https://github.com/atalariq>"]
+license = "MIT"
+description = "Personal lab report template as an Software Engineering Student at UGM"
+repository = "https://github.com/atalariq/typst-packages"
+keywords = ["report", "computer-science", "software-engineering"]
+categories = ["report"]
+disciplines = ["engineering", "computer-science"]
+exclude = [ ]
+
+[template]
+path = "template"
+entrypoint = "main.typ"
