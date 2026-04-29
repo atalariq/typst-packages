@@ -1,35 +1,15 @@
-#import "@preview/zebraw:0.6.1": *
-
-#let code = zebraw.with(
-  lang: false,
-  numbering: true,
-  comment-color: luma(240),
-  background-color: (luma(245), luma(248), luma(252), luma(248)),
-  hanging-indent: true,
-  extend: true,
-)
-
-// Usage tips:
-// #let include-code(path, ..args) = code-from-file(read(path), lang: path.split(".").at(-1), header: path, ..args)
-#let code-from-file(read-file, lang: "py", ..code-args) = {
-  code(
-    raw(read-file, block: true, lang: lang),
-    ..code-args
-  )
-}
-
 // Source: https://github.com/AugustinWinther/codedis/blob/main/lib.typ
 // TODO: Refactor this to fit my needs
 #let codedis(
   code,
   lang: "py",
-  font-size: 9pt,
-  border-size: 0.13em,
+  font-size: 0.8em,
+  border-size: 0.04em,
   border-color: luma(170),
   line-color-1: luma(250),
   line-color-2: luma(240),
   lines: none,
-  line-numbers: false,
+  line-numbers: true,
   line-number-color: luma(130),
 ) = {
 

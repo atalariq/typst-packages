@@ -8,8 +8,8 @@ description = "ATS-friendly cv template"
 repository = "https://github.com/atalariq/typst-packages"
 keywords = ["cv", "resume", "ATS"]
 categories = ["cv"]
-exclude = [ ]
+exclude = [ "example" ]
 
 [template]
-path = "template"
-entrypoint = "main.typ"
+path = "example"
+entrypoint = "cv.typ"

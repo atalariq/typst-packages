@@ -1,4 +1,4 @@
-#import "./content.typ": CONTENT
+#import "config/content.typ": CONTENT
 
 #let report(
   author: "Atalariq Barra Hadinugraha",
@@ -19,27 +19,30 @@
     logo: none,
   ),
   lang: "id",
+  region: "id",
   use-cover: true,
   bib: none,
   font: "Times New Roman",
   code-font: "Fira Code",
   font-size: 12pt,
+  paper: "a4",
+  margin: 1in,
   body,
 ) = {
   //? Document
   set document(author: author, title: title)
-  set page(paper: "a4", margin: 1in)
+  set page(paper: paper, margin: margin)
 
   //? Font
-  set text(font: font, size: font-size, lang: "id", region: "id")
-  show raw: set text(font: code-font, size: font-size * 0.82)
-  show raw.where(block: true): set text(size: font-size * 0.88)
+  set text(font: font, size: font-size, lang: lang, region: region)
+  show raw: set text(font: code-font, size: 0.95em)
+  show raw.where(block: true): set text(size: 0.85em)
 
   //? Paragraph
-  set par(leading: 0.65em, spacing: 2em, linebreaks: "optimized")
+  // set par(leading: 0.65em, spacing: 2em, linebreaks: "optimized")
 
   //? Heading
-  show heading: set block(above: 1.4em, below: 1em)
+  // show heading: set block(above: 1.4em, below: 1em)
   set heading(numbering: (..nums) => {
     nums = nums.pos()
     if nums.len() == 1 {
@@ -60,25 +63,25 @@
 
   //? Figure
   set figure(supplement: it => {
-    if it.func() == image { CONTENT.supplement.image }
-    else if it.func() == table { CONTENT.supplement.table }
-    else if ( it.func() == raw) { CONTENT.supplement.raw }
+    if it.func() == image { CONTENT.supplement.image } else if it.func() == table { CONTENT.supplement.table } else if (
+      it.func() == raw
+    ) { CONTENT.supplement.raw }
   })
 
-  //? Term List
-  show terms: it => {
-    let rows = ()
-    for item in it.children {
-      rows.push(strong(item.term))
-      rows.push(item.description)
-    }
-    table(
-      columns: (auto, 1fr),
-      stroke: none,
-      gutter: 0pt,
-      ..rows,
-    )
-  }
+  ////? Term List
+  //show terms: it => {
+  //  let rows = ()
+  //  for item in it.children {
+  //    rows.push(strong(item.term))
+  //    rows.push(item.description)
+  //  }
+  //  table(
+  //    columns: (auto, 1fr),
+  //    stroke: none,
+  //    gutter: 0pt,
+  //    ..rows,
+  //  )
+  //}
 
   //? Bib
   set bibliography(style: "ieee", title: none, full: true)
@@ -87,17 +90,7 @@
   [#metadata(none)#label("report:begin")]
 
   //? Cover
-  if not use-cover {
-    // Just a simple header
-    align(center)[
-      #text(1.25em, weight: "bold")[
-        #CONTENT.cover.alt-title #course \
-        #CONTENT.cover.meeting #meeting \
-        #title
-      ]
-    ]
-    line(length: 100%)
-  } else {
+  if use-cover {
     // Full cover
     align(center)[
       #upper(
@@ -153,6 +146,7 @@
   //? References
   if bib != none {
     let resolved-title = if use-cover { CONTENT.bibliography } else { CONTENT.references }
+    if use-cover { pagebreak() }
     align(center)[
       #heading(level: 1, numbering: none)[#resolved-title]
     ]

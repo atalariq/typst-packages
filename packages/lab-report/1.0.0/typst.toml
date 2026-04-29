@@ -9,8 +9,8 @@ repository = "https://github.com/atalariq/typst-packages"
 keywords = ["report", "computer-science", "software-engineering"]
 categories = ["report"]
 disciplines = ["engineering", "computer-science"]
-exclude = [ ]
+exclude = ["examples/"]
 
 [template]
-path = "template"
+path = "examples"
 entrypoint = "main.typ"

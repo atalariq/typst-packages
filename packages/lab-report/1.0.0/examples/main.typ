@@ -1,7 +1,7 @@
 #import "@atalariq/lab-report:1.0.0": *
 #import "@atalariq/code:1.0.0": *
 
-#show: report.with(
+#let metadata = (
   author: "Atalariq Barra Hadinugraha",
   id: "25/557554/SV/26192",
   class: "B2",
@@ -10,6 +10,10 @@
   lecturer: "Dr. John Doe",
   meeting: "4",
   title: "Implementasi Stack dan Queue Berbasis Linked List",
+)
+
+#show: report.with(
+  ..metadata,
 
   association: (
     program: "D-IV TEKNOLOGI REKAYASA PERANGKAT LUNAK",
@@ -25,14 +29,14 @@
   bib: bibliography("references.bib"),
   font: "Times New Roman",
   code-font: "Fira Code",
-  font-size: 12pt,
+  font-size: 11pt,
 )
 
 #set par(justify: true)
 #set par(first-line-indent: (amount: 0.5in, all: true))
 
 #let include-code(path, ..args) = code-from-file(read(path), lang: path.split(".").at(-1), header: path, ..args)
-#let img(path, ..args) = image-wrapper(read(path), ..args)
+#let img(path, ..args) = image-wrapper(read(path, encoding: none), ..args)
 
 #daftar-isi()
 // #daftar-gambar()
@@ -180,24 +184,12 @@ Urutan output `A, B` mengonfirmasi perilaku FIFO: `A` yang masuk pertama adalah 
 #tbl(
   caption: "Kompleksitas Waktu dan Ruang Stack dan Queue Berbasis Linked List",
   columns: (1fr, auto, auto),
-  [*Operasi*],
-  [*Stack*],
-  [*Queue*],
-  [Push / Enqueue],
-  [$O(1)$],
-  [$O(1)$],
-  [Pop / Dequeue],
-  [$O(1)$],
-  [$O(1)$],
-  [Peek / Front],
-  [$O(1)$],
-  [$O(1)$],
-  [Pencarian (Search)],
-  [$O(n)$],
-  [$O(n)$],
-  [Ruang (Space)],
-  [$O(n)$],
-  [$O(n)$],
+  [*Operasi*], [*Stack*], [*Queue*],
+  [Push / Enqueue], [$O(1)$], [$O(1)$],
+  [Pop / Dequeue], [$O(1)$], [$O(1)$],
+  [Peek / Front], [$O(1)$], [$O(1)$],
+  [Pencarian (Search)], [$O(n)$], [$O(n)$],
+  [Ruang (Space)], [$O(n)$], [$O(n)$],
 )
 
 Semua operasi inti Stack dan Queue berbasis Linked List berjalan dalam waktu konstan $O(1)$ karena setiap operasi hanya memanipulasi satu atau dua pointer tanpa iterasi @cormen2022. Ini berbeda dengan implementasi berbasis array, di mana operasi `push` sesekali membutuhkan $O(n)$ saat terjadi resize. Kompleksitas ruang $O(n)$ mencerminkan bahwa total memori yang digunakan sebanding lurus dengan jumlah elemen yang tersimpan, ditambah _overhead_ pointer `next` pada setiap Node.
