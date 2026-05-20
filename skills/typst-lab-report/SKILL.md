@@ -234,7 +234,7 @@ Use ONLY these helpers unless user explicitly introduces new ones:
 | `#code(…)` | `#code(header: str, numbering: bool, raw-block)` | Inline code block (via zebraw) |
 | `#code-block(body, caption: none, lang: "py")` | Direct call | Source code as numbered figure with caption (separate counter from images) |
 | `#code-from-file(read-file, lang: "py", ..args)` | via `let` binding | Read file content and render with code() |
-| `#col(…)` | `#col(block1, block2)` | Two-column layout. **SHORT snippets only** (< 15 lines per side). For long source code files with screenshots, use full-width `#include-code()` then `#img()` below — NEVER `#col()`. |
+| `#col(…)` | `#col(block1, block2, responsive: true, threshold: 30em)` | Two-column layout. **SHORT snippets only** (< 15 lines per side). `responsive: true` stacks vertically when available width < threshold. |
 | `#tbl(caption: str, columns: array, …cells)` | | Styled table |
 | `#rect[…]` | standard Typst | Placeholder box for TODOs |
 

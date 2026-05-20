@@ -52,17 +52,41 @@
 //? n-column layout
 //  ratio: array of fr/length values e.g. (2fr, 1fr)
 //         if none, equal columns
-#let col(gutter: 1em, ratio: none, ..contents) = {
-  let cols = if ratio != none {
-    ratio
+//  responsive: when true, stack columns vertically if available width < threshold
+#let col(
+  gutter: 1em,
+  ratio: none,
+  responsive: false,
+  threshold: 30em,
+  ..contents,
+) = {
+  if responsive {
+    context {
+      let w = layout(size => size.width)
+      if w < threshold {
+        // Stack: single column, items flow as rows
+        grid(columns: 1fr, gutter: gutter, ..contents.pos())
+      } else {
+        let cols = if ratio != none {
+          ratio
+        } else {
+          (1fr,) * contents.pos().len()
+        }
+        grid(columns: cols, gutter: gutter, ..contents.pos())
+      }
+    }
   } else {
-    (1fr,) * contents.pos().len()
+    let cols = if ratio != none {
+      ratio
+    } else {
+      (1fr,) * contents.pos().len()
+    }
+    grid(
+      columns: cols,
+      gutter: gutter,
+      ..contents.pos(),
+    )
   }
-  grid(
-    columns: cols,
-    gutter: gutter,
-    ..contents.pos(),
-  )
 }
 
 //? Table
