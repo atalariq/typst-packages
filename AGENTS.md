@@ -21,7 +21,7 @@ Follows Typst local package convention: `packages/<name>/<version>/`.
 
 | Package      | Version | Entrypoint    | Notes                                                                                                                                                                    |
 | ------------ | ------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `lab-report` | 1.0.0   | `src/lib.typ` | Indonesian lab report template for UGM. Hardcoded defaults (author, ID format, association names) are specific to the author; consumers override via `report.with(...)`. |
+| `lab-report` | 2.0.0 | `src/lib.typ` | Modular lab report template with components and presets. |
 | `code`       | 1.0.0   | `src/lib.typ` | Codeblock utilities. `codedis` is adapted from [AugustinWinther/codedis](https://github.com/AugustinWinther/codedis).                                                   |
 | `cv`         | 1.0.0   | `src/lib.typ` | ATS-friendly CV template. Ligatures are intentionally disabled.                                                                                                          |
 
