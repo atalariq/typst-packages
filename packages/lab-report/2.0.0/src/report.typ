@@ -9,6 +9,8 @@
 //   )
 //   ...content here...
 
+#import "config/content.typ": CONTENT
+
 #let report(
   font: "Times New Roman",
   code-font: "Fira Code",
@@ -56,6 +58,10 @@
   // Bibliography (rendered after body, Typst sees it statically)
   if bib != none {
     pagebreak()
+    align(center)[
+      #heading(level: 1, numbering: none)[#CONTENT.bibliography]
+    ]
+    set text(size: 0.9em)
     bib
   }
 }

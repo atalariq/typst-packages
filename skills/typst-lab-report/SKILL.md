@@ -261,7 +261,7 @@ Use ONLY these helpers unless user explicitly introduces new ones:
 | Helper | Signature | Purpose |
 |--------|-----------|---------|
 | `report` | `#show: report.with(font: …, code-font: …, font-size: …)` | Base show rule: fonts, margins, heading numbering. Bib rendered after body. |
-| `full` | `#show: full.with(..metadata, association: …, bib: …, …)` | Full preset: cover → toc → body → bib → appendix |
+| `full` | `#show: full.with(..meta, bib: …, appendix-content: …)` | Full preset: cover → toc → body → bib → appendix |
 | `minimal` | `#show: minimal.with(..metadata, …)` | Minimal preset: cover → body only, no bib/toc |
 | `cover` | `#cover(..metadata, association: …, year: …, logo: …)` | Renders cover page |
 | `toc`, `tof`, `tot` | `#toc()` | Table of contents / figures / tables |
@@ -293,6 +293,7 @@ Use ONLY these helpers unless user explicitly introduces new ones:
   ..metadata,
   association: (...),
   bib: bibliography("references.bib"),
+  appendix-content: [#include-code("src/main.py")],
 )
 ```
 

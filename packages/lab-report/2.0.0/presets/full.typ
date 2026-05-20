@@ -48,7 +48,7 @@
 
   // Optional extras
   bib: none,          // bibliography("refs.bib") or none
-  appendix: none,     // content block or none
+  appendix-content: none,     // content block for appendix or none
 
   // Base config (passed to report())
   font: "Times New Roman",
@@ -95,8 +95,8 @@
       body
 
       // Appendix (rendered before bib which is handled by report())
-      if appendix != none {
-        appendix(appendix)
+      if appendix-content != none {
+        appendix(appendix-content)
       }
     },
   )

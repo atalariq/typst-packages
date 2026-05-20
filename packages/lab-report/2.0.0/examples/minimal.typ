@@ -1,5 +1,5 @@
-// Example: Minimal report using the 2.0.0 preset API (no TOC, no theory)
-// Compile: typst compile examples/minimal.typ --root .
+// Minimal report using the `minimal` preset (no TOC, no theory, no bib).
+// Compile: typst compile examples/minimal.typ
 
 #import "@atalariq/lab-report:2.0.0": *
 
@@ -32,21 +32,14 @@
 
 #set par(justify: true)
 #set heading(numbering: "1.")
-#set enum(numbering: "a.1.")
 
 #let include-code(path, ..args) = code-from-file(read(path), lang: path.split(".").at(-1), ..args)
 #let img(path, ..args) = image-wrapper(read(path, encoding: none), ..args)
 
-= Dasar Teori
-
-Dequeue (double-ended queue) adalah struktur data linear yang mendukung operasi penambahan dan penghapusan elemen dari kedua ujungnya secara efisien.
-
-== Implementasi
-
-=== Kode Program
+== Kode Program
 
 #include-code("src/deque.py")
 
-=== Output
+== Output
 
 #img("assets/deque.png", caption: [Hasil output program `antrean_deque.py`])
