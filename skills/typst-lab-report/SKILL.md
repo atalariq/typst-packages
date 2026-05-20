@@ -216,22 +216,50 @@ Use ONLY these helpers unless user explicitly introduces new ones:
 
 | Helper | Signature | Purpose |
 |--------|-----------|---------|
-| `report` | `#show: report.with(..metadata, association: (…), year: int, use-cover: bool, bib: bibliography(…), font: str, code-font: str, font-size: length)` | Top-level show rule. First `#show` call. |
-| `#daftar-isi()` | no args | Table of contents |
+| `report` | `#show: report.with(font: …, code-font: …, font-size: …)` | Base show rule: fonts, margins, heading numbering. Bib rendered after body. |
+| `full` | `#show: full.with(..metadata, association: …, bib: …, …)` | Full preset: cover → toc → body → bib → lampiran |
+| `minimal` | `#show: minimal.with(..metadata, …)` | Minimal preset: cover → body only, no bib/toc |
+| `cover` | `#cover(..metadata, association: …, year: …, logo: …)` | Renders cover page |
+| `toc`, `tof`, `tot` | `#toc()` | Table of contents / figures / tables |
+| `tujuan` | `#tujuan[+ item 1 + item 2]` | Tujuan Praktikum section with numbered list |
+| `hasil` | `#hasil[...]` | Hasil dan Pembahasan section with pagebreak |
+| `kesimpulan` | `#kesimpulan[+ item 1]` | Kesimpulan section with pagebreak |
+| `bibliography` | `#bibliography(bibliography("refs.bib"), title: "…")` | Renders bibliography with heading (Typst built-in: first arg) |
+| `lampiran` | `#lampiran[#include-code("src/main.py")]` | Lampiran section with pagebreak |
+| `daftar-isi()` | no args | Table of contents |
 | `#daftar-gambar()` | no args | List of figures |
 | `#daftar-tabel()` | no args | List of tables |
 | `#include-code(path, line-range: (start, end), ..args)` | via `let` binding | Reads file and renders as code block with header. Always use user's `let` alias. Prefer `line-range`. **`line-range` is end-exclusive** like Python `list[start:end]`: the `end` line is NOT included. Always add 1 to get the intended last line. |
 | `#img(path, ..args)` | via `let` binding | Image with caption. Always use user's `let` alias. |
-| `#code(…)` | `#code(header: str, numbering: bool, raw-block)` | Inline code block |
+| `#code(…)` | `#code(header: str, numbering: bool, raw-block)` | Inline code block (via zebraw) |
+| `#code-block(body, caption: none, lang: "py")` | Direct call | Source code as numbered figure with caption (separate counter from images) |
+| `#code-from-file(read-file, lang: "py", ..args)` | via `let` binding | Read file content and render with code() |
 | `#col(…)` | `#col(block1, block2)` | Two-column layout. **SHORT snippets only** (< 15 lines per side). For long source code files with screenshots, use full-width `#include-code()` then `#img()` below — NEVER `#col()`. |
 | `#tbl(caption: str, columns: array, …cells)` | | Styled table |
 | `#rect[…]` | standard Typst | Placeholder box for TODOs |
 
-**Import block** (always at top of `.typ` files):
+**Import block** (at the top of `.typ` files):
 ```typst
-#import "@atalariq/lab-report:1.0.0": *
-#import "@atalariq/code:1.0.0": *
+#import "@atalariq/lab-report:2.0.0": *
 ```
+
+**Preset usage** (recommended — covers entire report):
+```typst
+#show: full.with(
+  ..metadata,
+  association: (...),
+  bib: bibliography("references.bib"),
+)
+```
+
+**Component usage** (for custom composition):
+```typst
+#show: report.with(font: "Times New Roman")
+#cover(..metadata, ...)
+#toc()
+#tujuan[+ ...]
+#hasil[...]
+#bibliography(bibliography("refs.bib"))
 
 ### 5.2 Metadata object
 ```typst
