@@ -1,0 +1,37 @@
+name: Compile Check
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  compile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: typst-community/setup-typst@v3
+        with:
+          typst-version: latest
+
+      - name: Symlink local packages
+        run: |
+          mkdir -p ~/.local/share/typst/packages
+          ln -sf "$PWD/packages" ~/.local/share/typst/packages/atalariq
+
+      - name: Compile lab-report example
+        run: typst compile examples/main.typ
+        working-directory: packages/lab-report/1.0.0
+
+      - name: Compile lab-report minimal
+        run: typst compile examples/minimal.typ
+        working-directory: packages/lab-report/1.0.0
+
+      - name: Compile code example
+        run: typst compile example/main.typ
+        working-directory: packages/code/1.0.0
+
+      - name: Compile cv example
+        run: typst compile example/cv.typ
+        working-directory: packages/cv/1.0.0

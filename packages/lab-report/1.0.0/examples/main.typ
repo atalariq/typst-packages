@@ -32,8 +32,7 @@
   font-size: 11pt,
 )
 
-#set par(justify: true)
-#set par(first-line-indent: (amount: 0.5in, all: true))
+#set par(justify: true, first-line-indent: (amount: 0.5in, all: true))
 
 #let include-code(path, ..args) = code-from-file(read(path), lang: path.split(".").at(-1), header: path, ..args)
 #let img(path, ..args) = image-wrapper(read(path, encoding: none), ..args)

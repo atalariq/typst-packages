@@ -22,6 +22,7 @@
   region: "id",
   use-cover: true,
   bib: none,
+  lampiran: none,
   font: "Times New Roman",
   code-font: "Fira Code",
   font-size: 12pt,
@@ -39,10 +40,8 @@
   show raw.where(block: true): set text(size: 0.85em)
 
   //? Paragraph
-  // set par(leading: 0.65em, spacing: 2em, linebreaks: "optimized")
 
   //? Heading
-  // show heading: set block(above: 1.4em, below: 1em)
   set heading(numbering: (..nums) => {
     nums = nums.pos()
     if nums.len() == 1 {
@@ -67,21 +66,6 @@
       it.func() == raw
     ) { CONTENT.supplement.raw }
   })
-
-  ////? Term List
-  //show terms: it => {
-  //  let rows = ()
-  //  for item in it.children {
-  //    rows.push(strong(item.term))
-  //    rows.push(item.description)
-  //  }
-  //  table(
-  //    columns: (auto, 1fr),
-  //    stroke: none,
-  //    gutter: 0pt,
-  //    ..rows,
-  //  )
-  //}
 
   //? Bib
   set bibliography(style: "ieee", title: none, full: true)
@@ -145,10 +129,9 @@
 
   //? References
   if bib != none {
-    let resolved-title = if use-cover { CONTENT.bibliography } else { CONTENT.references }
-    if use-cover { pagebreak() }
+    pagebreak()
     align(center)[
-      #heading(level: 1, numbering: none)[#resolved-title]
+      #heading(level: 1, numbering: none)[#CONTENT.bibliography]
     ]
     set text(size: 0.9em)
     bib
@@ -156,4 +139,11 @@
 
   //? END OF CONTENT
   [#metadata(none)#label("report:end")]
+
+  //? Lampiran
+  if lampiran != none {
+    pagebreak()
+    heading(level: 1, numbering: none)[Lampiran]
+    lampiran
+  }
 }

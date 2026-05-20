@@ -20,6 +20,5 @@
   table-of-picture: "Daftar Gambar",
   table-of-table: "Daftar Tabel",
   bibliography: "Daftar Pustaka",
-  references: "Referensi",
 )
 

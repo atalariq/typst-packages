@@ -1,0 +1,18 @@
+# Compiled outputs
+*.pdf
+
+# Firecrawl cache
+.firecrawl/
+
+# macOS
+.DS_Store
+.DS_Store?
+
+# Editor/IDE
+*.swp
+*.swo
+*~
+
+# Python
+__pycache__/
+*.pyc
