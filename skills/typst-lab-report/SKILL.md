@@ -217,18 +217,18 @@ Use ONLY these helpers unless user explicitly introduces new ones:
 | Helper | Signature | Purpose |
 |--------|-----------|---------|
 | `report` | `#show: report.with(font: …, code-font: …, font-size: …)` | Base show rule: fonts, margins, heading numbering. Bib rendered after body. |
-| `full` | `#show: full.with(..metadata, association: …, bib: …, …)` | Full preset: cover → toc → body → bib → lampiran |
+| `full` | `#show: full.with(..metadata, association: …, bib: …, …)` | Full preset: cover → toc → body → bib → appendix |
 | `minimal` | `#show: minimal.with(..metadata, …)` | Minimal preset: cover → body only, no bib/toc |
 | `cover` | `#cover(..metadata, association: …, year: …, logo: …)` | Renders cover page |
 | `toc`, `tof`, `tot` | `#toc()` | Table of contents / figures / tables |
-| `tujuan` | `#tujuan[+ item 1 + item 2]` | Tujuan Praktikum section with numbered list |
-| `hasil` | `#hasil[...]` | Hasil dan Pembahasan section with pagebreak |
-| `kesimpulan` | `#kesimpulan[+ item 1]` | Kesimpulan section with pagebreak |
+| `objectives` | `#objectives[+ item 1 + item 2]` | Tujuan Praktikum section with numbered list |
+| `results` | `#results[...]` | Hasil dan Pembahasan section with pagebreak |
+| `conclusion` | `#conclusion[+ item 1]` | Kesimpulan section with pagebreak |
 | `bibliography` | `#bibliography(bibliography("refs.bib"), title: "…")` | Renders bibliography with heading (Typst built-in: first arg) |
-| `lampiran` | `#lampiran[#include-code("src/main.py")]` | Lampiran section with pagebreak |
-| `daftar-isi()` | no args | Table of contents |
-| `#daftar-gambar()` | no args | List of figures |
-| `#daftar-tabel()` | no args | List of tables |
+| `appendix` | `#appendix[#include-code("src/main.py")]` | Lampiran section with pagebreak |
+| `table-of-contents()` | no args | Table of contents |
+| `list-of-figures()` | no args | List of figures |
+| `list-of-tables()` | no args | List of tables |
 | `#include-code(path, line-range: (start, end), ..args)` | via `let` binding | Reads file and renders as code block with header. Always use user's `let` alias. Prefer `line-range`. **`line-range` is end-exclusive** like Python `list[start:end]`: the `end` line is NOT included. Always add 1 to get the intended last line. |
 | `#img(path, ..args)` | via `let` binding | Image with caption. Always use user's `let` alias. |
 | `#code(…)` | `#code(header: str, numbering: bool, raw-block)` | Inline code block (via zebraw) |
@@ -257,8 +257,8 @@ Use ONLY these helpers unless user explicitly introduces new ones:
 #show: report.with(font: "Times New Roman")
 #cover(..metadata, ...)
 #toc()
-#tujuan[+ ...]
-#hasil[...]
+#objectives[+ ...]
+#results[...]
 #bibliography(bibliography("refs.bib"))
 ```
 
