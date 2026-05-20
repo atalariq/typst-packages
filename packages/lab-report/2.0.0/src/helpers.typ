@@ -17,21 +17,21 @@
 }
 
 //? Daftar Isi
-#let daftar-isi(break-page: true) = context {
+#let table-of-contents(break-page: true) = context {
   let n = query(heading.where(outlined: true)).len()
-  if n > 0 { _outline(break-page: break-page, title: CONTENT.table-of-content) }
+  if n > 0 { _outline(break-page: break-page, title: CONTENT.table-of-contents) }
 }
 
 //? Daftar Gambar
-#let daftar-gambar(break-page: true) = context {
+#let list-of-figures(break-page: true) = context {
   let n = query(figure.where(kind: image, outlined: true)).len()
-  if n > 0 { _outline(break-page: break-page, title: CONTENT.table-of-picture, target: figure.where(kind: image)) }
+  if n > 0 { _outline(break-page: break-page, title: CONTENT.list-of-figures, target: figure.where(kind: image)) }
 }
 
 //? Daftar Tabel
-#let daftar-tabel(break-page: true) = context {
+#let list-of-tables(break-page: true) = context {
   let n = query(figure.where(kind: table, outlined: true)).len()
-  if n > 0 { _outline(break-page: break-page, title: CONTENT.table-of-table, target: figure.where(kind: table)) }
+  if n > 0 { _outline(break-page: break-page, title: CONTENT.list-of-tables, target: figure.where(kind: table)) }
 }
 
 //? Image

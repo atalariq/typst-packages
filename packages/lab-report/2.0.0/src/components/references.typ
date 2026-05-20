@@ -12,10 +12,10 @@
   bib
 }
 
-// ── Lampiran ────────────────────────────────────────────────────────
-// Usage: #lampiran[#include-code("src/main.py")]
-#let lampiran(body) = {
+// ── Appendix ────────────────────────────────────────────────────────
+// Usage: #appendix[#include-code("src/main.py")]
+#let appendix(body) = {
   pagebreak()
-  heading(level: 1, numbering: none)[#CONTENT.lampiran]
+  heading(level: 1, numbering: none)[#CONTENT.appendix]
   body
 }

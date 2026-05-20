@@ -1,4 +1,4 @@
-# import "../config/content.typ": CONTENT
+#import "../config/content.typ": CONTENT
 
 // Render cover page.
 // Spread metadata dict as keyword args, e.g.:

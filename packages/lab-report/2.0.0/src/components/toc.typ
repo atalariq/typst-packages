@@ -1,15 +1,16 @@
 // ── Table of Contents ───────────────────────────────────────────────
-// Thin wrappers around daftar-isi / daftar-gambar / daftar-tabel.
-// These are re-exported from helpers.typ but also available as components.
+// Thin wrappers around table-of-contents / list-of-figures / list-of-tables.
+
+#import "../helpers.typ": table-of-contents, list-of-figures, list-of-tables
 
 #let toc(break-page: true) = {
-  daftar-isi(break-page: break-page)
+  table-of-contents(break-page: break-page)
 }
 
 #let tof(break-page: true) = {
-  daftar-gambar(break-page: break-page)
+  list-of-figures(break-page: break-page)
 }
 
 #let tot(break-page: true) = {
-  daftar-tabel(break-page: break-page)
+  list-of-tables(break-page: break-page)
 }

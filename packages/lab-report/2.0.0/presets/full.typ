@@ -24,7 +24,7 @@
 #import "../src/report.typ": report
 #import "../src/components/cover.typ": cover
 #import "../src/components/toc.typ": toc
-#import "../src/components/references.typ": lampiran
+#import "../src/components/references.typ": appendix
 
 #let full(
   // Metadata
@@ -48,7 +48,7 @@
 
   // Optional extras
   bib: none,          // bibliography("refs.bib") or none
-  lampiran: none,     // content block or none
+  appendix: none,     // content block or none
 
   // Base config (passed to report())
   font: "Times New Roman",
@@ -94,9 +94,9 @@
       // User content (tujuan, dasar teori, hasil, kesimpulan, etc.)
       body
 
-      // Lampiran (rendered before bib which is handled by report())
-      if lampiran != none {
-        lampiran(lampiran)
+      // Appendix (rendered before bib which is handled by report())
+      if appendix != none {
+        appendix(appendix)
       }
     },
   )

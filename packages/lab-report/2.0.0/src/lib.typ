@@ -5,9 +5,9 @@
 
 // Components
 #import "./components/cover.typ": cover
-#import "./components/sections.typ": tujuan, hasil, kesimpulan
+#import "./components/sections.typ": objectives, results, conclusion
 #import "./components/toc.typ": toc, tof, tot
-#import "./components/references.typ": print-bibliography as render-bibliography, lampiran
+#import "./components/references.typ": print-bibliography, appendix
 
 // Config
 #import "./config/content.typ": CONTENT

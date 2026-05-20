@@ -1,10 +1,9 @@
 #import "../config/content.typ": CONTENT
 
-// ── Tujuan Praktikum ────────────────────────────────────────────────
-// Usage: #tujuan[+ item 1 + item 2]
-// Or with body: #tujuan(body)[+ item 1]
-#let tujuan(body: none, ..items) = {
-  = CONTENT.tujuan
+// ── Objectives ─────────────────────────────────────────────────────
+// Usage: #objectives[+ item 1 + item 2]
+#let objectives(body: none, ..items) = {
+  heading(level: 1, numbering: none)[#CONTENT.objectives]
   if body != none {
     body
   }
@@ -13,19 +12,19 @@
   }
 }
 
-// ── Hasil dan Pembahasan ────────────────────────────────────────────
-// Usage: #hasil[content here]
-#let hasil(body) = {
+// ── Results and Discussion ─────────────────────────────────────────
+// Usage: #results[content here]
+#let results(body) = {
   pagebreak()
-  = CONTENT.hasil
+  heading(level: 1, numbering: none)[#CONTENT.results]
   body
 }
 
-// ── Kesimpulan ──────────────────────────────────────────────────────
-// Usage: #kesimpulan[+ point 1 + point 2]
-#let kesimpulan(body: none, ..items) = {
+// ── Conclusion ─────────────────────────────────────────────────────
+// Usage: #conclusion[+ point 1 + point 2]
+#let conclusion(body: none, ..items) = {
   pagebreak()
-  = CONTENT.kesimpulan
+  heading(level: 1, numbering: none)[#CONTENT.conclusion]
   if body != none {
     body
   }
