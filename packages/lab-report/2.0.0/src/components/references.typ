@@ -2,7 +2,7 @@
 
 // ── Bibliography ────────────────────────────────────────────────────
 // Usage: #bibliography(bibliography("refs.bib"))
-#let bibliography(bib, title: none) = {
+#let print-bibliography(bib, title: none) = {
   let resolved-title = if title != none { title } else { CONTENT.bibliography }
   pagebreak()
   align(center)[

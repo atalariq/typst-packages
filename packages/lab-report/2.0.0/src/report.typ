@@ -1,9 +1,12 @@
 // Base show rule for lab reports.
-// Handles document setup only: fonts, margins, heading numbering, figures, paragraphs.
-// Does NOT render cover, TOC, bibliography, or lampiran — use components/presets for that.
+// Handles document setup and optional bibliography rendering.
+// Does NOT render cover, TOC, or lampiran — use components/presets for that.
 //
 // Usage:
-//   #show: report.with(font: "Times New Roman", font-size: 12pt)
+//   #show: report.with(
+//     font: "Times New Roman",
+//     bib: bibliography("refs.bib"),
+//   )
 //   ...content here...
 
 #let report(
@@ -14,10 +17,10 @@
   region: "id",
   paper: "a4",
   margin: 1in,
+  bib: none,
   body,
 ) = {
   // Document
-  set document(author: none, title: none)
   set page(paper: paper, margin: margin)
 
   // Font
@@ -49,4 +52,10 @@
 
   // Content
   body
+
+  // Bibliography (rendered after body, Typst sees it statically)
+  if bib != none {
+    pagebreak()
+    bib
+  }
 }

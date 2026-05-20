@@ -1,4 +1,4 @@
-// Minimal report preset — cover + hasil + kesimpulan (no TOC, no bib, no theory)
+// Minimal report preset — cover + body only (no TOC, no bib, no theory)
 // For fast turnaround when time is tight.
 //
 // Usage:
@@ -50,7 +50,6 @@
   // Content
   body,
 ) = {
-  // Base setup
   report(
     font: font,
     code-font: code-font,
@@ -59,23 +58,25 @@
     region: region,
     paper: paper,
     margin: margin,
-  )
 
-  // Cover
-  cover(
-    author: author,
-    id: id,
-    class: class,
-    course: course,
-    course-code: course-code,
-    lecturer: lecturer,
-    meeting: meeting,
-    title: title,
-    association: association,
-    year: year,
-    logo: logo,
-  )
+    {
+      // Cover
+      cover(
+        author: author,
+        id: id,
+        class: class,
+        course: course,
+        course-code: course-code,
+        lecturer: lecturer,
+        meeting: meeting,
+        title: title,
+        association: association,
+        year: year,
+        logo: logo,
+      )
 
-  // User content (just hasil sections)
-  body
+      // User content (just hasil sections)
+      body
+    },
+  )
 }

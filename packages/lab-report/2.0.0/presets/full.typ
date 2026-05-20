@@ -24,7 +24,7 @@
 #import "../src/report.typ": report
 #import "../src/components/cover.typ": cover
 #import "../src/components/toc.typ": toc
-#import "../src/components/references.typ": bibliography, lampiran
+#import "../src/components/references.typ": lampiran
 
 #let full(
   // Metadata
@@ -47,8 +47,8 @@
   logo: none,
 
   // Optional extras
-  bib: none,
-  lampiran: none,
+  bib: none,          // bibliography("refs.bib") or none
+  lampiran: none,     // content block or none
 
   // Base config (passed to report())
   font: "Times New Roman",
@@ -62,7 +62,6 @@
   // Content
   body,
 ) = {
-  // Base setup
   report(
     font: font,
     code-font: code-font,
@@ -71,36 +70,34 @@
     region: region,
     paper: paper,
     margin: margin,
+    bib: bib,
+
+    {
+      // Cover
+      cover(
+        author: author,
+        id: id,
+        class: class,
+        course: course,
+        course-code: course-code,
+        lecturer: lecturer,
+        meeting: meeting,
+        title: title,
+        association: association,
+        year: year,
+        logo: logo,
+      )
+
+      // Table of contents
+      toc()
+
+      // User content (tujuan, dasar teori, hasil, kesimpulan, etc.)
+      body
+
+      // Lampiran (rendered before bib which is handled by report())
+      if lampiran != none {
+        lampiran(lampiran)
+      }
+    },
   )
-
-  // Cover
-  cover(
-    author: author,
-    id: id,
-    class: class,
-    course: course,
-    course-code: course-code,
-    lecturer: lecturer,
-    meeting: meeting,
-    title: title,
-    association: association,
-    year: year,
-    logo: logo,
-  )
-
-  // Table of contents
-  toc()
-
-  // User content (tujuan, dasar teori, hasil, kesimpulan, etc.)
-  body
-
-  // Bibliography
-  if bib != none {
-    bibliography(bib)
-  }
-
-  // Lampiran
-  if lampiran != none {
-    lampiran(lampiran)
-  }
 }
