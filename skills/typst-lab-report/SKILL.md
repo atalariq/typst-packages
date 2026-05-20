@@ -50,19 +50,48 @@ Running in **Hermes Agent (CLI mode)**. You have filesystem access and `terminal
 
 **Use when:** User needs a blank report structure to fill in manually.
 
+### Phase S0 — Auto-Detect Metadata
+
+Before asking the user, scan the environment to auto-detect as much metadata as possible. Rules checked in order:
+
+**1. Folder name parsing** — apply these regex patterns on `cwd` basename:
+- `[Pp]ertemuan[ \-_]?(\d+)` → `meeting: "$1"`
+- `P(\d+)-` (PBD convention: `P8-subquery`) → `meeting: "$1"`
+- `PPW1` → `course-code: "PPW1"`
+- `PBD|Basis[ \-_]Data|Oracle` → `course-code: "PBD"`
+- `PSD|Struktur[ \-_]Data|PSDA` → `course-code: "PSD"` or `course-code: "PSDA"`
+- `PPBO|PBO|OOP|Java` → `course-code: "PPBO"`
+- `Web|Pemrograman[ \-_]Web` → `course-code: "PPW1"`
+
+**2. TASK.md / README.md scan** — if `TASK.md`, `README.md`, or `README.typ` exists in cwd:
+- Search for lines containing `course`, `matkul`, `praktikum`, `pertemuan`, `meeting`, `dosen`, `lecturer`
+- Example match: `# Praktikum Basis Data - Pertemuan 8` → `course: "Praktikum Basis Data"`, `meeting: "8"`
+- Example match: `## PPW1 - Pertemuan 4` → `course-code: "PPW1"`, `meeting: "4"`
+
+**3. Parent directory heuristic** — scan parent dir names:
+- `S2_Praktikum_Basis_Data` → `course-code: "PBD"`
+- `S2_Praktikum_Struktur_Data` → `course-code: "PSD"`
+- `S2_Praktikum_Pemrograman_Web` → `course-code: "PPW1"`
+- `S2_Praktikum_PBO` → `course-code: "PPBO"`
+
+**4. Merge & present** — Combine detected values with defaults (from user profile). Present the user with only what's still unknown (`…` placeholders). Format:
+
+```markdown
+Auto-detected:
+- meeting: 8 (from folder name)
+- course-code: PBD (from folder name)
+
+Still needed:
+- course: ?
+- lecturer: ?
+- title: ?
+```
+
+Never ask for `author`, `id`, or `class` — they have hardcoded defaults.
+
 ### Phase S1 — Collect Metadata
 
-Ask for missing fields in one numbered list. Detect from context where possible (cwd folder name may indicate matkul/meeting).
-
-Required metadata:
-```
-author, id, class, course, course-code, lecturer, meeting, title
-```
-
-Default values (from user profile):
-- author: Atalariq Barra Hadinugraha
-- id: 25/557554/SV/26192
-- class: B2
+Ask for **only** the fields still unknown after Phase S0. Use one numbered list. If all fields detected, skip this phase entirely.
 
 ### Phase S2 — Generate
 
@@ -144,7 +173,7 @@ This is the **original 3-phase workflow** from the OpenCode skill, adapted for H
 
 ### Phase D1 — Planning
 
-1. **Silent extraction:** Read source code, workspace, and course-specific config first.
+1. **Silent extraction:** Read source code, workspace, and course-specific config first. Run **Phase S0 auto-detect** to fill metadata before asking.
 2. **Batch metadata:** Ask all missing metadata in one numbered list.
 3. **Technical grilling (light):** Ask 2-3 clarifying questions about the implementation. For PPW1/web courses: focus on layout decisions and component choices, NOT complexity.
 4. **Output:** Structured outline in Markdown (sections, concepts for Dasar Teori, code blocks to explain).
