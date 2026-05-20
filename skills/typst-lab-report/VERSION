@@ -1,0 +1,6 @@
+# Template version requirements for typst-lab-report skill
+# Format: package >= min-version
+# The skill assumes these API exports; older versions may lack functions.
+
+lab-report >=2.0.0
+code >=1.0.0

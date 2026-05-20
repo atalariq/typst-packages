@@ -44,6 +44,21 @@ description: >
 
 Running in **Hermes Agent (CLI mode)**. You have filesystem access and `terminal`. Write `.typ` files directly. Compile via `typst compile` in terminal.
 
+### 0E. Version Check
+
+Before generating any content, read the `VERSION` file from the skill directory (`${SKILL_DIR}/VERSION`) and verify the user's template version is compatible:
+
+1. Read `VERSION` to get minimum required package versions.
+2. Check the user's `report.typ` to see which `@atalariq/*` version they import (e.g., `@atalariq/lab-report:2.0.0`).
+3. If the imported version is too old, warn:
+   ```
+   ⚠️ Skill requires @atalariq/lab-report >=2.0.0 but found 1.0.0.
+      Update: cd ~/Repos/typst-packages && git pull
+   ```
+4. For SCAFFOLD mode, the template always imports the correct version — no check needed.
+
+Running in **Hermes Agent (CLI mode)**. You have filesystem access and `terminal`. Write `.typ` files directly. Compile via `typst compile` in terminal.
+
 ---
 
 ## 1. MODE SCAFFOLD — Template Generation
@@ -365,8 +380,47 @@ Inline: `$O(1)$`, `$O(n)$`. Block: use `$ … $` on its own line. Only use when 
 
 ## 6. COMPILE GATE
 
-After writing or patching a `.typ` file:
+Run the following checks in order. All are **DRAFT mode only** (SKIP for SCAFFOLD and PUZZLE).
 
+### 6A. Pre-Compile Checks
+
+**1. Bib checker** — validate bibliography if `references.bib` exists:
+```bash
+# Extract all @citekeys from the .bib file
+grep -oP '^\s*@\w+\{(\K[^,]+)' references.bib | sort > /tmp/bib-keys.txt
+# Extract all @citekeys used in report.typ
+grep -oP '(?<!@preview)@[\w-]+' report.typ | sort -u > /tmp/used-keys.txt
+# Report unused bib entries and missing citations
+comm -23 /tmp/bib-keys.txt /tmp/used-keys.txt  # unused bib entries
+comm -13 /tmp/bib-keys.txt /tmp/used-keys.txt  # missing bib entries
+```
+If missing entries found → warn user and offer to add them.
+
+**2. Path validator** — check all file paths referenced in `report.typ`:
+```bash
+# Check include-code paths
+grep -oP '#include-code\("\K[^"]+' report.typ | while IFS= read -r f; do
+  [ -f "$f" ] || echo "MISSING: $f"
+done
+# Check img paths
+grep -oP '#img\("\K[^"]+' report.typ | while IFS= read -r f; do
+  [ -f "$f" ] || echo "MISSING: $f"
+done
+```
+If missing → offer to create file or fix path. For paths outside project root, suggest symlink: `ln -sf <real-path> src/<name>`.
+
+**3. Structure checker** — use `typst query` to verify document structure:
+```bash
+# Count level-1 headings
+typst query report.typ '<heading level=1>' --one 2>/dev/null | grep -c '"level": 1' || true
+# Count figures (images, tables, code blocks)
+typst query report.typ '<figure>' --one 2>/dev/null | grep -cP '"kind": "(image|table|code)"' || true
+```
+Verify at minimum: `Hasil dan Pembahasan` heading exists, at least one figure included.
+
+### 6B. Compile
+
+After pre-checks pass:
 1. Run `typst compile report.typ` in the project directory via terminal.
 2. If success → announce: **[COMPILE OK]**.
 3. If error → read stderr, patch ONLY Typst syntax errors (never prose or content). Max 3 iterations.
