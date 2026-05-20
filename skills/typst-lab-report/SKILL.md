@@ -260,6 +260,7 @@ Use ONLY these helpers unless user explicitly introduces new ones:
 #tujuan[+ ...]
 #hasil[...]
 #bibliography(bibliography("refs.bib"))
+```
 
 ### 5.2 Metadata object
 ```typst
