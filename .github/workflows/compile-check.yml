@@ -20,13 +20,13 @@ jobs:
           mkdir -p ~/.local/share/typst/packages
           ln -sf "$PWD/packages" ~/.local/share/typst/packages/atalariq
 
-      - name: Compile lab-report example
-        run: typst compile examples/main.typ
-        working-directory: packages/lab-report/1.0.0
+      - name: Compile lab-report full example
+        run: typst compile examples/full.typ
+        working-directory: packages/lab-report/3.0.0
 
-      - name: Compile lab-report minimal
+      - name: Compile lab-report minimal example
         run: typst compile examples/minimal.typ
-        working-directory: packages/lab-report/1.0.0
+        working-directory: packages/lab-report/3.0.0
 
       - name: Compile code example
         run: typst compile example/main.typ
@@ -35,3 +35,9 @@ jobs:
       - name: Compile cv example
         run: typst compile example/cv.typ
         working-directory: packages/cv/1.0.0
+
+      - name: Scaffold a report via new-laporan.sh and compile it
+        run: |
+          printf 'CI Test\n1/000/SV/0000\nA1\nMatkul Test\nMT\nDr Test\n1\nJudul Test\n' \
+            | bash skills/typst-lab-report/scripts/new-laporan.sh ci-scaffold-test
+          typst compile ci-scaffold-test/report.typ
