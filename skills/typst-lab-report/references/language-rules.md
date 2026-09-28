@@ -32,7 +32,7 @@ kebalikannya, demi reading flow ala Google Codelabs:
 
 ## Terminology
 
-- English terms without accepted Indonesian equivalent → italicise on first use per section: `_grid system_`, `_navbar_`, `_card_`, `_breakpoint_`, `_modal_`.
+- English terms without accepted Indonesian equivalent → italicise on first use per section: `_grid system_`, `_navbar_`, `_breakpoint_` (web), `_trigger_`, `_pseudorecord_` (SQL), `_encapsulation_`, `_polymorphism_` (OOP).
 - Accepted Indonesian equivalents don't need italics: tata letak, bilah navigasi, kartu, tabel, formulir.
 - After first use in a section, no re-italicising needed.
 
@@ -47,5 +47,5 @@ kebalikannya, demi reading flow ala Google Codelabs:
 
 - Format entri: `references.yaml` (Hayagriva), bukan `references.bib` (BibLaTeX). Typst native mendukung Hayagriva tanpa package tambahan.
 - Field wajib per entri: `type`, `title`, `author` (list, format `Nama Belakang, Nama Depan`), `date`, `url`.
-- Prefer sumber: MDN Web Docs, W3C, dokumentasi resmi framework, textbook.
+- Prefer sumber otoritatif untuk teknologi yang dipakai (dokumentasi resmi, standards body, textbook) — lihat `Referensi Prioritas` di `course-specific/<code>.md` untuk daftar per-matkul.
 - Laporan lama (sebelum 2026-09-29) yang masih pakai `references.bib` tetap valid dan tidak perlu dikonversi — Typst membaca dua-duanya. Hanya laporan baru yang pakai `.yaml`.

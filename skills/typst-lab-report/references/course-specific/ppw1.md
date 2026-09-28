@@ -14,7 +14,7 @@
 | 10+       | JavaScript (dasar, output, dialog, operator, DOM)                 | JS intensif, vanilla CSS           |
 | 11+       | PHP (form processing, server-side logic, date/time, BMI, profile) | PHP, HTML, CSS classless           |
 
-## Evaluasi (dari laprak-evaluasi.md)
+## Evaluasi
 
 | Kriteria   | Bobot |
 | ---------- | ----- |
@@ -230,11 +230,281 @@ Untuk PPW1, pertanyaan panduan harus fokus pada:
 - **Page break:** Tambahkan `#pagebreak()` sebelum `= Hasil dan Pembahasan` dan sebelum `= Kesimpulan`.
 - **Lampiran:** gunakan `#heading(level: 1, numbering: none)[Lampiran]` (jangan `outlined: false`).
 - Contoh caption baik: `caption: [Hasil render Tugas 1 yang menampilkan bilah navigasi _sticky_ dan kartu profil dengan lencana status _absolute_.]`
+- **Compile gate optional** — jalankan cuma kalau user minta (lihat `references/compile-gate.md`).
+
+## Screenshot Splitting — Mengambil Koordinat dari Browser
+
+Untuk teknik crop umumnya (scale factor, Pillow), lihat
+`references/screenshot-splitting.md`. Langkah khusus web ini adalah cara
+mendapatkan koordinat batas tiap section dari halaman yang sedang dikerjakan.
+
+Buka halaman HTML-nya, jalankan ini di `browser_console`:
+
+```js
+JSON.stringify({
+  vw: window.innerWidth,
+  dpr: window.devicePixelRatio,
+  navbar: document.querySelector(".navbar").getBoundingClientRect(),
+  hero: document.querySelector(".hero-section").getBoundingClientRect(),
+  works: document.querySelector("#works").getBoundingClientRect(),
+  about: document.querySelector("#about").getBoundingClientRect(),
+  footer: document.querySelector("footer").getBoundingClientRect(),
+});
+```
+
+Ganti selector sesuai section halaman yang sedang dikerjakan. Ini
+mengembalikan posisi piksel relatif terhadap viewport pada lebar viewport
+saat ini. `bottom` dari section N adalah `top` dari section N+1 (atau akhir
+halaman untuk section terakhir).
+
+### Contoh nyata (dari PPW1 P9)
+
+Browser melaporkan pada viewport 1280px:
+
+- navbar: 0–101, hero: 0–850, works: 850–1608, about: 1608–2469, footer: 2469–2606
+- page_total_height: 2606
+
+Screenshot desktop: 2880×5164 → scale = 5164/2606 ≈ 1.98
+
+Crop (nilai Y dibulatkan ke bawah dengan margin 20px), pakai Pillow
+(`references/screenshot-splitting.md` Step 3):
+
+```python
+from PIL import Image
+
+im = Image.open("full-ss-desktop.png")
+im.crop((0, 0, im.width, 1700)).save("ss-desktop-hero.png")      # Hero (0-1700)
+im.crop((0, 1680, im.width, 3200)).save("ss-desktop-works.png")  # Works (1680-3200)
+im.crop((0, 3180, im.width, 4900)).save("ss-desktop-about.png")  # About (3180-4900)
+im.crop((0, 4880, im.width, 5164)).save("ss-desktop-footer.png") # Footer (4880-end)
+```
+
+Untuk screenshot tablet/mobile, pakai logika scale factor yang sama dengan
+dimensi masing-masing. Halaman lebih tinggi di viewport lebih kecil karena
+konten menumpuk vertikal.
 
 ## Referensi Prioritas
 
 - MDN Web Docs (https://developer.mozilla.org/)
 - Bootstrap 5 Documentation (https://getbootstrap.com/docs/5.3/)
 - W3C CSS Specifications
-- Referensi CSS framework comparison: lihat `references/css-frameworks.md`
-- Referensi PHP patterns: lihat `references/php-patterns.md`
+- Referensi CSS framework: lihat `## Alternatif CSS Framework` di bawah
+- Referensi PHP patterns: lihat `## Pola PHP (Pertemuan 11+)` di bawah
+
+## Alternatif CSS Framework
+
+Drop-in classless/lightweight frameworks untuk tugas PPW1 yang butuh styling
+tanpa build tools. Cukup tambahin satu `<link>` CDN — no npm, no webpack.
+
+### Classless Frameworks (Recommended)
+
+Zero CSS classes — just semantic HTML. Paling cocok buat tugas PPW1 yang
+fokus ke PHP/JS logic.
+
+| Framework      | Size   | Style                                | Dark Mode                          | Notes                                                                            |
+| -------------- | ------ | ------------------------------------ | ---------------------------------- | -------------------------------------------------------------------------------- |
+| **Pico CSS**   | ~10 KB | Modern, card-based, typography bagus | ✅ Auto                            | Paling recommended upgrade dari Milligram. Termasuk form, table, button styling. |
+| **MVP.css**    | ~8 KB  | Clean, responsive                    | ❌                                 | Paling stabil. Hasilnya konsisten di semua browser.                              |
+| **Simple.css** | ~6 KB  | Documentation-style, mirip MDN       | ✅ Manual via prefers-color-scheme | Cocok buat halaman yang isinya banyak teks + tabel.                              |
+| **Water.css**  | ~5 KB  | Dark first, clean                    | ✅ Always dark                     | Paling enteng. Cocok kalo mau dark theme tanpa effort.                           |
+| **Sakura**     | ~8 KB  | Typography-first, aesthetic          | ✅                                 | Beberapa varian tema (sakura-vimmer, sakura-earthly, dll)                        |
+| **Milligram**  | ~7 KB  | Minimal, clean                       | ❌                                 | Yang skrg dipake. Butuh custom CSS tambahan.                                     |
+
+#### Quick compatibility matrix
+
+| Feature      | Pico      | MVP | Simple | Water | Sakura | Milligram            |
+| ------------ | --------- | --- | ------ | ----- | ------ | -------------------- |
+| Form         | ✅        | ✅  | ✅     | ✅    | ✅     | ✅                   |
+| Table        | ✅        | ✅  | ✅     | ✅    | ✅     | ✅ (striping manual) |
+| Button       | ✅        | ✅  | ✅     | ✅    | ✅     | ✅                   |
+| Navbar       | ✅        | ❌  | ❌     | ❌    | ❌     | ❌                   |
+| Grid/Columns | ✅ (auto) | ❌  | ❌     | ❌    | ❌     | ✅ (`.column`)       |
+| Code/Pre     | ✅        | ✅  | ✅     | ✅    | ✅     | ✅                   |
+
+### Class-based Frameworks (Heavier)
+
+Kalo butuh layout/components lebih kompleks.
+
+| Framework       | Size    | Style                         | Notes                                                     |
+| --------------- | ------- | ----------------------------- | --------------------------------------------------------- |
+| **Bulma**       | ~180 KB | Flexbox, modern components    | Navbar, card, modal, tabs, form — built-in. Gak perlu JS. |
+| **Spectre.css** | ~45 KB  | Lightweight component library | Navbar, card, toast, grid. Lebih enteng dari Bulma.       |
+
+### Decision Flow
+
+```
+Butuh framework buat tugas PHP/JS?
+├── Ya, cuma bikin halaman + form + tabel sederhana
+│   ├── Pilih classless (~5-10 KB)
+│   │   ├── Pengen dark mode → Pico CSS (auto) atau Water.css (always dark)
+│   │   ├── Mau mirip Milligram tapi lebih modern → Pico CSS
+│   │   └── Mau yang paling minimal → MVP.css atau Simple.css
+│   └── Pilih class-based
+│       ├── Mau navbar/card/modal siap pakai → Bulma
+│       └── Mau lebih enteng dari Bulma → Spectre.css
+└── Gak butuh framework → Vanilla CSS (khusus tugas JS)
+```
+
+### Example: Replace Milligram with Pico CSS
+
+**Before (Milligram):**
+
+```html
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic"
+/>
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css"
+/>
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.css"
+/>
+```
+
+**After (Pico CSS — CDN satu baris):**
+
+```html
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+/>
+```
+
+PicoCSS includes normalization — no separate normalize.css or font import needed. Provides auto dark mode, modern form styling, and full-width inputs by default. User tested Milligram → MVP.css → PicoCSS and settled on PicoCSS as the default for PHP-server-side tasks.
+
+## Pola PHP (Pertemuan 11+)
+
+Kumpulan pola reusable untuk tugas PPW1 pertemuan 11+.
+
+### 1. Form Processing — Generic Template
+
+```php
+<?php
+$field1 = '';
+$field2 = '';
+$result = '';
+$error   = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $field1 = filter_input(INPUT_POST, 'field1', FILTER_VALIDATE_FLOAT);
+    $field2 = filter_input(INPUT_POST, 'field2', FILTER_VALIDATE_FLOAT);
+
+    if ($field1 === false || $field2 === false) {
+        $error = 'Please enter valid numbers.';
+    } elseif ($field1 <= 0 || $field2 <= 0) {
+        $error = 'Values must be positive.';
+    } else {
+        $result = $field1 + $field2; // replace with actual logic
+    }
+}
+
+// Escape for HTML output — always do this AFTER processing
+$f1 = htmlspecialchars($_POST['field1'] ?? '');
+$f2 = htmlspecialchars($_POST['field2'] ?? '');
+?>
+
+<form method="POST" action="">
+  <input type="number" name="field1" value="<?= $f1 ?>" required>
+  <input type="number" name="field2" value="<?= $f2 ?>" required>
+  <button type="submit">Calculate</button>
+</form>
+
+<?php if ($error): ?>
+  <p class="error"><?= $error ?></p>
+<?php elseif ($result !== ''): ?>
+  <p>Result: <?= $result ?></p>
+<?php endif; ?>
+```
+
+### 2. Date Helpers
+
+```php
+// Get current month info
+$today     = new DateTime();
+$monthNum  = (int) $today->format('n');   // 1-12, no leading zero
+$day       = (int) $today->format('j');   // 1-31, no leading zero
+$totalDays = (int) $today->format('t');   // 28-31
+$remaining = $totalDays - $day;
+
+// Month name in Indonesian (no strftime dependency)
+$months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+           'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+$monthName = $months[$monthNum - 1];
+```
+
+### 3. BMI Calculator — Core Functions
+
+```php
+function getBMI(float $weightKg, float $heightM): float
+{
+    return round($weightKg / ($heightM * $heightM), 1);
+}
+
+function getBMICategory(float $bmi): string
+{
+    if ($bmi < 18.5)     return 'Underweight';
+    if ($bmi < 25.0)     return 'Normal weight';
+    if ($bmi < 30.0)     return 'Overweight';
+    return 'Obese';
+}
+
+function getIdealWeightRange(float $heightM): array
+{
+    $sq = $heightM * $heightM;
+    return [
+        'min' => round(18.5 * $sq, 1),
+        'max' => round(24.9 * $sq, 1),
+    ];
+}
+
+function getIdealWeightInsight(float $weightKg, float $heightM): array
+{
+    $bmi  = getBMI($weightKg, $heightM);
+    $sq   = $heightM * $heightM;
+    $min  = round(18.5 * $sq, 1);
+    $max  = round(24.9 * $sq, 1);
+
+    if ($bmi < 18.5) {
+        return [
+            'range'   => "{$min} kg - {$max} kg",
+            'message' => "You need to gain " . round($min - $weightKg, 1) . " kg.",
+        ];
+    }
+    if ($bmi <= 24.9) {
+        return [
+            'range'   => "{$min} kg - {$max} kg",
+            'message' => "You are within the normal range.",
+        ];
+    }
+    return [
+        'range'   => "{$min} kg - {$max} kg",
+        'message' => "You need to lose " . round($weightKg - $max, 1) . " kg.",
+    ];
+}
+```
+
+### 4. HTML-Safe Output Helper
+
+```php
+function e(?string $value): string
+{
+    return htmlspecialchars($value ?? '', ENT_QUOTES, 'UTF-8');
+}
+
+// Usage in template:
+// <input value="<?= e($_POST['name'] ?? '') ?>">
+// <p><?= e($userInput) ?></p>
+```
+
+### 5. Content-Type & Encoding Note
+
+Semua file PHP di PPW1 sebaiknya declare charset:
+
+```php
+<meta charset="UTF-8">
+```
+
+PHP `htmlspecialchars()` default charset tergantung PHP config (`default_charset`). Explicit `'UTF-8'` lebih aman.

@@ -129,4 +129,4 @@ img(...) = img(...)` self-reference recurses infinitely). This is the
 - Angle brackets `<` in prose → Typst interprets as label. Use `(di bawah 768 px)` or `\<`.
 - A literal `#include-code()`/`#img()` written as prose text (e.g. inside a `#rect[]` TODO placeholder) is still a real function call — escape it: `\#include-code()`.
 - Definition list: `/ term: description` — colon must be on same line as `/`.
-- Maths: `$O(1)$` inline. Only for algo/DS matkul, not PPW1.
+- Maths: `$O(1)$` inline. Only where the course's own config asks for complexity analysis (check `course-specific/<code>.md`) — not a general-purpose report element.

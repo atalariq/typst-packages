@@ -1,6 +1,6 @@
 ---
 name: typst-lab-report
-version: 3.1.1
+version: 3.2.0
 description: >
   Three-mode lab report workflow for Indonesian academic reports in Typst.
   Mode SCAFFOLD: template only. Mode PUZZLE: guiding questions. Mode DRAFT: full report.
@@ -33,6 +33,20 @@ Pick exactly one. If ambiguous, ask once. Never combine.
 3. Never rewrite approved content.
 4. Course-specific config mandatory. Check `references/course-specific/<course-code>.md` first.
 5. Announce mode + phase at start of each response.
+6. Check the template version before touching `report.typ` (see `## Version Check`).
+
+## Version Check
+
+Before SCAFFOLD Phase S2 or DRAFT Phase D1 touches `report.typ`: read
+`VERSION` in this skill's own directory for the minimum required
+`lab-report` version. Compare it against the version actually imported in
+the target file (the `#import "@atalariq/lab-report:X.Y.Z"` line) — for a
+brand-new file, that's whatever `new-laporan.sh`/`templates/report.typ`
+itself imports, which should already satisfy `VERSION`. If an _existing_
+`report.typ` being reopened imports an older version than `VERSION`
+requires, warn the user once and ask whether to upgrade the import line or
+continue as-is (it may be an intentionally frozen old report). Never
+silently rewrite the import.
 
 ## SCAFFOLD
 
@@ -86,7 +100,7 @@ Full commands: `references/compile-gate.md`
 - [ ] English terms italicised on first use per section.
 - [ ] Every `@citekey` has matching Hayagriva entry with `url`.
 - [ ] No invented Typst functions.
-- [ ] `#pagebreak()` before `= Hasil dan Pembahasan`, between `== Tugas`, before `= Kesimpulan`.
+- [ ] `#pagebreak()` before `= Hasil dan Pembahasan`, before `= Kesimpulan` (plus any extra breaks the course config asks for, e.g. PBD wants one between every `== Tugas`).
 - [ ] `#include-code()` line-range verified (complete logical unit, not cut mid-expression).
 - [ ] `#col()` only for short snippets (<15 lines/side).
 

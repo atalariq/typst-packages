@@ -52,4 +52,6 @@ After pre-checks pass:
 2. Success → **[COMPILE OK]**
 3. Error → read stderr, fix Typst syntax only (never prose). Max 3 iterations.
 4. Unresolved after 3 → stop, report stderr verbatim.
-5. PPW1/web: compile gate optional unless user asks.
+
+Whether the gate itself is mandatory or optional-unless-asked is a
+course-specific call — check `course-specific/<code>.md`.

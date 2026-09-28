@@ -1,27 +1,18 @@
 # references.yaml — starter template (Hayagriva format)
-# Hapus entri yang tidak dipakai. Setiap @citekey yang muncul di report.typ
-# harus punya entri di sini dengan field `url` yang valid.
-
-cormen2022:
-  type: book
-  title: Introduction to Algorithms
-  author:
-    - Cormen, Thomas H.
-    - Leiserson, Charles E.
-    - Rivest, Ronald L.
-    - Stein, Clifford
-  edition: "4"
-  publisher: The MIT Press
-  date: 2022
-  url: https://mitpress.mit.edu/9780262046305/introduction-to-algorithms/
-
-sedgewick2011:
-  type: book
-  title: Algorithms
-  author:
-    - Sedgewick, Robert
-    - Wayne, Kevin
-  edition: "4"
-  publisher: Addison-Wesley Professional
-  date: 2011
-  url: https://algs4.cs.princeton.edu/home/
+# Tambahkan satu entry per sumber yang disitasi (@citekey di report.typ).
+# Setiap entry butuh minimal: type, title, author, date, url.
+#
+# Contoh:
+#
+# cormen2022:
+#   type: book
+#   title: Introduction to Algorithms
+#   author:
+#     - Cormen, Thomas H.
+#     - Leiserson, Charles E.
+#     - Rivest, Ronald L.
+#     - Stein, Clifford
+#   edition: "4"
+#   publisher: The MIT Press
+#   date: 2022
+#   url: https://mitpress.mit.edu/9780262046305/introduction-to-algorithms/

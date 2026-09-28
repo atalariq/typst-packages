@@ -44,8 +44,8 @@
 #rect[
   TODO: Tulis tujuan praktikum dalam numbered list.
   Contoh:
-  + Memahami mekanisme grid system Bootstrap 5.
-  + Mampu mengimplementasikan layout responsif menggunakan class grid.
+  + Memahami konsep [X] yang dibahas pada pertemuan ini.
+  + Mampu menerapkan [X] pada studi kasus [Y].
 ]
 
 // ── Dasar Teori ─────────────────────────────────────────────────────────────
