@@ -126,7 +126,10 @@
   } else if type(body) == str {
     raw(body, lang: lang, block: true)
   } else {
-    panic("codeblock: `body` must be a raw element or a string, got " + repr(type(body)))
+    panic(
+      "codeblock: `body` must be a raw element or a string, got "
+        + repr(type(body)),
+    )
   }
 
   // A raw element with no language annotation does not merely have
@@ -134,7 +137,9 @@
   // with plain dot syntax panics with "field `lang` in raw is not known
   // at this point". `.at(..., default: ...)` tolerates an absent field.
   let display-lang = src-raw.at("lang", default: none)
-  let highlight-lang = if display-lang == none { none } else { _highlight-lang(display-lang, src-raw.text) }
+  let highlight-lang = if display-lang == none { none } else {
+    _highlight-lang(display-lang, src-raw.text)
+  }
 
   let hl-raw = if highlight-lang == display-lang {
     src-raw
@@ -157,7 +162,9 @@
   ..args,
 ) = {
   let (raw: code-raw, label: raw-lang) = _normalize-code(body, lang)
-  let tab-label = if lang-label != none { lang-label } else if raw-lang != none { raw-lang } else { false }
+  let tab-label = if lang-label != none { lang-label } else if (
+    raw-lang != none
+  ) { raw-lang } else { false }
 
   // Not `clip: true` here — zebraw floats its language tab above the code
   // block via a negative vertical offset (see vendor/zebraw/src/util.typ's
@@ -201,13 +208,25 @@
 // Daftar Gambar — hidden entirely when there are no image figures.
 #let tof(break-page: true) = context {
   let n = query(figure.where(kind: image, outlined: true)).len()
-  if n > 0 { _outline(CONTENT.list-of-figures, target: figure.where(kind: image), break-page: break-page) }
+  if n > 0 {
+    _outline(
+      CONTENT.list-of-figures,
+      target: figure.where(kind: image),
+      break-page: break-page,
+    )
+  }
 }
 
 // Daftar Tabel — hidden entirely when there are no table figures.
 #let tot(break-page: true) = context {
   let n = query(figure.where(kind: table, outlined: true)).len()
-  if n > 0 { _outline(CONTENT.list-of-tables, target: figure.where(kind: table), break-page: break-page) }
+  if n > 0 {
+    _outline(
+      CONTENT.list-of-tables,
+      target: figure.where(kind: table),
+      break-page: break-page,
+    )
+  }
 }
 
 // Wraps an image in a captioned figure (caption below), or just centers it
@@ -218,7 +237,12 @@
   if caption == none {
     align(center)[#body]
   } else {
-    figure(body, caption: caption, kind: image, supplement: [#CONTENT.supplement.image])
+    figure(
+      body,
+      caption: caption,
+      kind: image,
+      supplement: [#CONTENT.supplement.image],
+    )
   }
 }
 
@@ -348,7 +372,11 @@
   _require(lecturer, "lecturer", "cover(lecturer: \"Dr. John Doe\", ...)")
   _require(meeting, "meeting", "cover(meeting: \"4\", ...)")
   _require(title, "title", "cover(title: \"Implementasi ...\", ...)")
-  _require(logo, "logo", "cover(logo: image(\"assets/logo.png\", width: 6cm), ...)")
+  _require(
+    logo,
+    "logo",
+    "cover(logo: image(\"assets/logo.png\", width: 6cm), ...)",
+  )
 
   align(center)[
     #upper(
