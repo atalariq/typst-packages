@@ -95,6 +95,26 @@ compile time, but the "copy one file" usage mode now means copying `lib.typ`
 
 ## Hermes Skill (`typst-lab-report`)
 
+### Changed (2026-09-29)
+
+- Bibliography format switched from BibLaTeX (`references.bib`) to native Hayagriva (`references.yaml`) across the scaffold, `new-laporan.sh`, and all reference docs. Old `.bib` reports are untouched and still compile — nothing is retroactively converted.
+- `language-rules.md`'s blanket "purely passive voice" rule replaced with nuance from `~/Kuliah/meta/ARTICLE.md`: impersonal passive is the expected register for procedure, not itself a violation; the actual rule is don't hide an actor whose identity the next step depends on knowing.
+- Diátaxis's how-to/explanation separation deliberately **not** adopted — `Langkah Kerja` may restate relevant theory inline (Codelabs-style reading flow over strict mode separation), recorded as guidance only.
+
+### Fixed (2026-09-29)
+
+- `compile-gate.md`'s bib-checker script used `grep -oP` (PCRE), which macOS's stock `grep` (BSD) can't run at all — it never worked on this machine. Rewritten portably (`grep -E`/`sed -E`); same fix applied to the path validator and structure checker in the same file.
+- Its `@preview`-exclusion regex and an `@`-prefix mismatch between bib-keys and used-keys meant the missing/unused citation check could never have matched correctly even with a working `-P`.
+
+### Changed (2026-09-28)
+
+- Templates/references updated to `lab-report >=3.0.0` (`VERSION`, `templates/report.typ`, `references/typst-reference.md`).
+- `code-figure()` replaces `code-from-file()`; `logo:` moved to a top-level `full()`/`cover()` parameter instead of nested in `association:` (silently ignored there in 2.0.0, hard-fails in 3.0.0).
+
+### Fixed (2026-09-28)
+
+- `templates/report.typ`'s `#<space>` lines (`# import`, `# let`, ...) were never valid Typst syntax — verified every one fails to parse. Its own TODO placeholder text also called `#include-code()`/`#img()` unescaped inside a `#rect[]` block, the exact mistake `references/failure-modes.md` already warned against.
+
 ### Added (2026-05-20)
 
 - **Course auto-detect (Phase S0)** — extracts meeting number, course-code, and course name from folder name patterns, `TASK.md`/`README.md` content, and parent directory names.
