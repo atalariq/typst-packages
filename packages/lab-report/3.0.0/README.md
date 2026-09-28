@@ -5,6 +5,12 @@ style), with zero _network_ dependency: code blocks are rendered by
 [zebraw](https://github.com/hongjr03/typst-zebraw), vendored verbatim into
 `vendor/zebraw/` rather than fetched from Typst Universe.
 
+| Cover                            | Code figure (highlight + annotation)                                     |
+| -------------------------------- | ------------------------------------------------------------------------ |
+| ![Cover page](preview-cover.png) | ![Codeblock with highlighted line and annotation](preview-codeblock.png) |
+
+Rendered from `examples/full.typ` — see that file for the full source.
+
 ## Usage
 
 **Copied next to your report** (no package installation needed) — copy both
