@@ -13,7 +13,7 @@
   ..metadata,
   logo: image("assets/logo.png", width: 6cm),
   association: (...),
-  bib: bibliography("references.bib"),
+  bib: bibliography("references.yaml"),
   appendix-content: [#include-code("src/main.py")],
 )
 ```
@@ -29,7 +29,7 @@
 #toc()
 = Tujuan Praktikum
 + ...
-#bibliography("refs.bib")
+#bibliography("references.yaml")
 ```
 
 There is no `objectives()`/`results()`/`conclusion()` component in 3.0.0 —

@@ -30,7 +30,7 @@ die()  { echo -e "${RED}✗ ERROR:${RESET} $*" >&2; exit 1; }
 
 [[ -d "$TEMPLATE_DIR" ]] || die "Template dir not found: $TEMPLATE_DIR"
 [[ -f "$TEMPLATE_DIR/report.typ" ]] || die "Template report.typ not found in $TEMPLATE_DIR"
-[[ -f "$TEMPLATE_DIR/references.bib" ]] || die "Template references.bib not found in $TEMPLATE_DIR"
+[[ -f "$TEMPLATE_DIR/references.yaml" ]] || die "Template references.yaml not found in $TEMPLATE_DIR"
 
 # ── Get folder name ───────────────────────────────────────────────────────────
 
@@ -86,9 +86,9 @@ else
     warn "logo.png tidak ditemukan di template, skip."
 fi
 
-# Copy references.bib
-cp "$TEMPLATE_DIR/references.bib" "$FOLDER_NAME/references.bib"
-ok "references.bib"
+# Copy references.yaml
+cp "$TEMPLATE_DIR/references.yaml" "$FOLDER_NAME/references.yaml"
+ok "references.yaml"
 
 # Generate report.typ with metadata injected
 YEAR=$(date +%Y)

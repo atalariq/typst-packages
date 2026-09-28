@@ -205,7 +205,7 @@ Aturan:
 ## Aturan Konten
 
 - Hasil latihan praktikum **tidak perlu dimasukkan** ke laporan, tapi source code tetap harus ada di repo GitHub.
-- **Repositori GitHub:** Taruh link repo di **Lampiran**, bukan di Daftar Pustaka. Jangan tambahkan entry ke `references.bib`.
+- **Repositori GitHub:** Taruh link repo di **Lampiran**, bukan di Daftar Pustaka. Jangan tambahkan entry ke `references.yaml`.
 - Sertakan link Figma (jika ada desain UI/UX).
 
 ## Mode PUZZLE — Fokus Pertanyaan

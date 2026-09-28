@@ -11,11 +11,11 @@ description: >
 
 ## Modes
 
-| Mode | Triggers | What happens | User role |
-|------|----------|--------------|-----------|
-| **SCAFFOLD** | "scaffold", "bikin folder", "template aja" | Folder + `report.typ` with TODOs + `references.bib`. No prose. | Fill in manually. |
-| **PUZZLE** | "puzzle", "guide me", "pertanyaan" + source code | Guiding questions per section + references. | Write own report. |
-| **DRAFT** | "full report", "tulisin semua", "gue mepet" | Full AI-generated report (3-phase). Last resort. | Review content. |
+| Mode         | Triggers                                         | What happens                                                    | User role         |
+| ------------ | ------------------------------------------------ | --------------------------------------------------------------- | ----------------- |
+| **SCAFFOLD** | "scaffold", "bikin folder", "template aja"       | Folder + `report.typ` with TODOs + `references.yaml`. No prose. | Fill in manually. |
+| **PUZZLE**   | "puzzle", "guide me", "pertanyaan" + source code | Guiding questions per section + references.                     | Write own report. |
+| **DRAFT**    | "full report", "tulisin semua", "gue mepet"      | Full AI-generated report (3-phase). Last resort.                | Review content.   |
 
 Pick exactly one. If ambiguous, ask once. Never combine.
 
@@ -40,7 +40,7 @@ Pick exactly one. If ambiguous, ask once. Never combine.
 
 **Phase S1 — Collect** remaining metadata (one numbered list). Skip if all detected.
 
-**Phase S2 — Generate** via `new-laporan.sh <folder>` or write manually: `report.typ`, `references.bib`, `assets/logo.png`. Announce **[SCAFFOLD DONE]**.
+**Phase S2 — Generate** via `new-laporan.sh <folder>` or write manually: `report.typ`, `references.yaml`, `assets/logo.png`. Announce **[SCAFFOLD DONE]**.
 
 **Phase S3 — Compile check** (optional): `cd <folder> && typst compile report.typ`. Don't fix TODOs.
 
@@ -49,9 +49,10 @@ Pick exactly one. If ambiguous, ask once. Never combine.
 **P1 — Analyze** source files. Identify components, patterns, design decisions.
 
 **P2 — Generate questions** per task:
+
 - Core questions (wajib): "Bagaimana cara kerja X?", "Mengapa pendekatan Y?"
 - Exploration (pengayaan): accessibility, trade-offs, alternatives
-- References: 2-3 sources with BibTeX
+- References: 2-3 sources, Hayagriva format
 - Screenshot prompts: what to capture
 
 **P3 — Present** as markdown grouped by task. End with checklist.
@@ -62,7 +63,7 @@ Pick exactly one. If ambiguous, ask once. Never combine.
 
 **D1 — Plan**: read source + course config, auto-detect metadata, ask 2-3 clarifying Qs, output outline.
 
-**D2 — References**: 1-2 sources per Dasar Teori concept with BibTeX. User approves before D3.
+**D2 — References**: 1-2 sources per Dasar Teori concept, Hayagriva format. User approves before D3.
 
 **D3A — Pre-code draft**: `report.typ` with Tujuan + Dasar Teori written, Hasil/Kesimpulan as `#rect[TODO]`. Compile gate.
 
@@ -70,7 +71,7 @@ Pick exactly one. If ambiguous, ask once. Never combine.
 
 ## Compile Gate (DRAFT only)
 
-1. Bib checker: extract `@citekeys` from `.bib` vs `report.typ`, warn on mismatches.
+1. Bib checker: extract `@citekeys` from `references.yaml` vs `report.typ`, warn on mismatches.
 2. Path validator: check all `#include-code()` and `#img()` paths exist.
 3. Structure checker: verify `Hasil dan Pembahasan` heading + at least one figure.
 4. `typst compile report.typ`. Max 3 error-fix iterations, then stop and report stderr.
@@ -83,7 +84,7 @@ Full commands: `references/compile-gate.md`
 - [ ] Course config checked.
 - [ ] No first/second person pronouns.
 - [ ] English terms italicised on first use per section.
-- [ ] Every `@citekey` has matching BibTeX with `url`.
+- [ ] Every `@citekey` has matching Hayagriva entry with `url`.
 - [ ] No invented Typst functions.
 - [ ] `#pagebreak()` before `= Hasil dan Pembahasan`, between `== Tugas`, before `= Kesimpulan`.
 - [ ] `#include-code()` line-range verified (complete logical unit, not cut mid-expression).
@@ -92,6 +93,7 @@ Full commands: `references/compile-gate.md`
 ## Course Configs
 
 Check `references/course-specific/<code>.md` before generating. Available:
+
 - `ppw1.md` — PPW1 (Pemrograman Web 1)
 - `ppbo.md` — PPBO (Pemrograman Berorientasi Objek)
 - `pbd.md` — PBD (Basis Data) — Oracle XE 21c, SQL heavy

@@ -23,7 +23,7 @@
     city: "Yogyakarta",
   ),
   year: 2026,
-  bib: bibliography("references.bib", style: "ieee"),
+  bib: bibliography("references.yaml", style: "ieee"),
   font: "Times New Roman",
   mono-font: "Fira Code",
   font-size: 12pt,
