@@ -59,7 +59,7 @@ Kelas `Stack` diimplementasikan dengan sebuah list Python sebagai penyimpanan in
   read("src/stack.py"),
   lang: "python",
   caption: [Implementasi kelas `Stack`],
-  highlight: (line: 8, note: [Melempar `IndexError` alih-alih diam-diam mengembalikan `None`.]),
+  highlight-lines: ((8, [Melempar `IndexError` alih-alih diam-diam mengembalikan `None`.]),),
 )
 
 == Implementasi Queue
@@ -81,8 +81,27 @@ Berikut demonstrasi eksekusi Stack dan output-nya berdampingan:
   ```, header: [Eksekusi]),
   code-figure(```
   20
-  ```, header: [Output], numbers: false),
+  ```, header: [Output], numbering: false),
 )
+
+== Catatan Highlighting Bahasa Lain
+
+Cuplikan PHP tanpa tag pembuka `<?php` dan cuplikan Blade tetap diwarnai, karena
+`codeblock`/`code-figure` mengalihkan highlighter-nya secara diam-diam (label
+tab tetap menampilkan nama bahasa aslinya):
+
+#code-figure(```php
+public function edit(Project $project)
+{
+    return view('projects.edit', ['project' => $project]);
+}
+```, caption: [PHP tanpa `<?php`.])
+
+#code-figure(```blade
+@if (session('success'))
+    <div class="alert">{{ session('success') }}</div>
+@endif
+```, caption: [Blade, diwarnai sebagai HTML.])
 
 == Analisis Kompleksitas
 

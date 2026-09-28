@@ -1,12 +1,14 @@
 # lab-report 3.0.0
 
-A single self-contained Typst file for Indonesian academic lab reports (UGM
-Sekolah Vokasi style). Zero external package imports — everything, including
-a from-scratch code-block renderer, lives in `lib.typ`.
+A single Typst file for Indonesian academic lab reports (UGM Sekolah Vokasi
+style), with zero _network_ dependency: code blocks are rendered by
+[zebraw](https://github.com/hongjr03/typst-zebraw), vendored verbatim into
+`vendor/zebraw/` rather than fetched from Typst Universe.
 
 ## Usage
 
-**Copied next to your report** (no package installation needed):
+**Copied next to your report** (no package installation needed) — copy both
+`lib.typ` and `vendor/`:
 
 ```typst
 #import "lab-report.typ": *
@@ -151,17 +153,29 @@ numbered figure (caption above). `columns` accepts an int (that many equal
 
 Renders `body` with `codeblock()` (see below) and optionally wraps it in a
 captioned, numbered figure — using its **own** counter, independent of
-`img()`/`tbl()`. `..args` forwards to `codeblock()`, so `lang:`,
-`highlight:`, `range:`, etc. all work here too.
+`img()`/`tbl()`, and breakable across a page boundary (`report()` sets
+`show figure.where(kind: "code"): set block(breakable: true)`). `..args`
+forwards to `codeblock()`.
 
-#### `codeblock(body, lang:, numbers:, number-start:, number-rule:, number-color:, range:, range-restart:, highlight:, highlight-color:, annotate-prefix:, annotate-color:, header:, footer:, tab:, tab-color:, lang-label:, background:, hanging-indent:, font:, font-size:, inset:, radius:)`
+#### `codeblock(body, lang:, lang-label:, ..args)`
 
-The from-scratch code-block engine (line numbers, ranges, per-line
-highlighting with optional annotations, header/footer, a language tab,
-zebra-striped or flat backgrounds, hanging indent on wrapped lines). `body`
-is a `raw` element or a plain string. See the doc comments above `codeblock`
-in `lib.typ` for every parameter's default and meaning — there are 20 of
-them, all independently documented inline.
+A preset over vendored [zebraw](https://github.com/hongjr03/typst-zebraw)
+(`vendor/zebraw/`, see `vendor/zebraw/README.md`), styled to match this
+template: a bordered rounded frame, a grey floating language tab, a flat
+white background, line numbers with a gutter separator, hanging indent on
+wrapped lines. `body` is a `raw` element or a plain string (`lang:` names its
+language). `..args` is forwarded straight to zebraw's own `zebraw()` — see
+[its README](vendor/zebraw/README.md) or `vendor/zebraw/src/mod.typ` for the
+full parameter list: `numbering:`, `highlight-lines:` (e.g.
+`((8, [note content]),)` to highlight line 8 with an annotation), `header:`,
+`footer:`, `line-range:`, etc. `codeblock`/`code-figure` also re-export
+`zebraw` itself, for callers who want it unstyled.
+
+**Language aliasing**: Typst's built-in highlighter only colours a
+` ```php ` block once the source opens with `<?php`, and has no
+`blade` grammar. `codeblock` resolves this transparently — a bare PHP
+snippet is highlighted as `PHP Source`, and `blade` is highlighted as `html`
+— while the tab still shows the original name (`php` / `blade`).
 
 ### Layout
 
