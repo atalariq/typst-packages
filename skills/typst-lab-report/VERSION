@@ -2,5 +2,4 @@
 # Format: package >= min-version
 # The skill assumes these API exports; older versions may lack functions.
 
-lab-report >=2.0.0
-code >=1.0.0
+lab-report >=3.0.0

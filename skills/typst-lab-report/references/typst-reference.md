@@ -3,7 +3,7 @@
 ## Import
 
 ```typst
-#import "@atalariq/lab-report:2.0.0": *
+#import "@atalariq/lab-report:3.0.0": *
 ```
 
 ## Preset (recommended)
@@ -11,22 +11,29 @@
 ```typst
 #show: full.with(
   ..metadata,
+  logo: image("assets/logo.png", width: 6cm),
   association: (...),
   bib: bibliography("references.bib"),
   appendix-content: [#include-code("src/main.py")],
 )
 ```
 
+`logo` is a **top-level** parameter of `full`/`minimal`/`cover`, never inside
+`association`. It's required — omitting it fails loudly with an `assert`.
+
 ## Component usage (custom composition)
 
 ```typst
 #show: report.with(font: "Times New Roman")
-#cover(..metadata, ...)
+#cover(..metadata, logo: image("assets/logo.png", width: 6cm), ...)
 #toc()
-#objectives[+ ...]
-#results[...]
-#bibliography(bibliography("refs.bib"))
+= Tujuan Praktikum
++ ...
+#bibliography("refs.bib")
 ```
+
+There is no `objectives()`/`results()`/`conclusion()` component in 3.0.0 —
+write `= Tujuan Praktikum` etc. directly; the body is freeform either way.
 
 ## Metadata object
 
@@ -43,7 +50,7 @@
 )
 ```
 
-## Association object (cover only)
+## Association object (cover only — no `logo` key here)
 
 ```typst
 association: (
@@ -52,49 +59,54 @@ association: (
   faculty: "Sekolah Vokasi",
   university: "Universitas Gadjah Mada",
   city: "Yogyakarta",
-  logo: image("assets/logo.png", width: 6cm),
 ),
 ```
 
 ## Known-good helpers
 
-| Helper | Signature | Purpose |
-|--------|-----------|---------|
-| `report` | `#show: report.with(font:, code-font:, font-size:)` | Base show rule |
-| `full` | `#show: full.with(..meta, bib:, appendix-content:)` | Full preset: cover→toc→body→bib→appendix |
-| `minimal` | `#show: minimal.with(..metadata, ...)` | Minimal: cover→body only |
-| `cover` | `#cover(..metadata, association:, year:, logo:)` | Cover page |
-| `toc` / `tof` / `tot` | `#toc()` | Table of contents/figures/tables |
-| `objectives` | `#objectives[+ item 1 + item 2]` | Tujuan section |
-| `results` | `#results[...]` | Hasil section |
-| `conclusion` | `#conclusion[+ item 1]` | Kesimpulan section |
-| `bibliography` | `#bibliography(bibliography("refs.bib"), title: "...")` | Bibliography |
-| `appendix` | `#appendix[#include-code("src/main.py")]` | Lampiran |
-| `include-code` | `#include-code(path, line-range: (start, end))` | Code block from file. **line-range is end-exclusive** — add 1 to last line. |
-| `img` | `#img(path, caption:, width:)` | Image with caption |
-| `code` | `#code(header:, numbering:, raw-block)` | Inline code block |
-| `code-block` | `#code-block(body, caption:, lang:)` | Numbered code figure |
-| `col` | `#col(block1, block2, responsive:, threshold:)` | Two-column. **SHORT snippets only (<15 lines/side).** |
-| `tbl` | `#tbl(caption:, columns:, ...cells)` | Styled table |
-| `rect` | `#rect[...]` | TODO placeholder |
+| Helper                | Signature                                                  | Purpose                                                                                |
+| --------------------- | ---------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| `report`              | `#show: report.with(font:, mono-font:, font-size:, bib:)`  | Base show rule                                                                         |
+| `full`                | `#show: full.with(..meta, logo:, bib:, appendix-content:)` | Full preset: cover→toc/tof/tot→body→bib→appendix                                       |
+| `minimal`             | `#show: minimal.with(..metadata, logo:, ...)`              | Minimal: cover→body only                                                               |
+| `cover`               | `#cover(..metadata, logo:, association:, year:)`           | Cover page, called standalone                                                          |
+| `toc` / `tof` / `tot` | `#toc()`                                                   | Daftar Isi/Gambar/Tabel — auto-hidden when empty                                       |
+| `img`                 | `#img(body, caption:)`                                     | `body` is content (`image(...)`), not a path — see `include-code`/`img` bindings below |
+| `tbl`                 | `#tbl(caption:, columns:, ..rows)`                         | Styled table                                                                           |
+| `code-figure`         | `#code-figure(body, caption:, lang:, ..zebraw-args)`       | Numbered code figure; `body` is a raw block or a string                                |
+| `codeblock`           | `#codeblock(body, lang:, ..zebraw-args)`                   | Same rendering, uncaptioned                                                            |
+| `col`                 | `#col(block1, block2, responsive:, threshold:)`            | Two-column. **SHORT snippets only (<15 lines/side).**                                  |
+| `appendix`            | `#appendix[...]`                                           | Lampiran, its own page                                                                 |
+| `CONTENT`             | dict                                                       | Every Indonesian label the template prints; fork `lib.typ` to relabel                  |
+
+`code-figure`/`codeblock` forward `..args` straight to zebraw (vendored in
+`packages/lab-report/3.0.0/vendor/zebraw/`) — useful ones: `numbering:`
+(bool), `line-range: (lo, hi)` (1-based, **end-exclusive** — add 1 to the
+last line you want), `highlight-lines: ((8, [note content]),)` to highlight
+a line with an annotation, `header:`, `footer:`. There is no `range`,
+`highlight: (line:, note:)`, `numbers:`, `tab:`, or `font:` parameter —
+those were the old (pre-2026-09-28) from-scratch engine's names.
+
+**Always set `lang:`.** Typst's built-in highlighter needs it to colour
+anything; a bare fenced block with no language stays plain black-and-white.
+`code-figure`/`codeblock` alias two special cases so the tab still shows the
+name you wrote: `php` highlights even without a `<?php` opening tag, and
+`blade` highlights using the `html` grammar.
 
 ## Helper bindings
 
-**Check existing bindings first.** Two styles exist:
+**Check existing bindings first.** `img`/`toc` etc. are the package's own
+names — don't redefine them without aliasing the original first (a `#let
+img(...) = img(...)` self-reference recurses infinitely). This is the
+`report.typ` template's pattern:
 
-**Style A** (package-based, from `@atalariq/code`):
 ```typst
-#let include-code(path, ..args) = code-from-file(read(path), lang: path.split(".").at(-1), header: [#path.split("/").at(-1)], ..args)
-#let img(path, ..args) = image-wrapper(read(path, encoding: none), ..args)
-```
+#import "@atalariq/lab-report:3.0.0": *
+#import "@atalariq/lab-report:3.0.0": img as lab-img
 
-**Style B** (stdlib-based):
-```typst
-#let include-code(path, ..args) = code(header: path, numbering: true, raw(read(path), lang: path.split(".").last(), ..args))
-#let img(path, caption: [], width: 100%) = figure(image(path, width: width), caption: caption)
+#let include-code(path, ..args) = code-figure(read(path), lang: path.split(".").at(-1), header: [#path.split("/").at(-1)], ..args)
+#let img(path, width: 100%, ..args) = lab-img(image(path, width: width), ..args)
 ```
-
-Never mix. If Style B exists in file, use Style B throughout.
 
 ## Heading levels
 
@@ -106,14 +118,15 @@ Never mix. If Style B exists in file, use Style B throughout.
 ## What NOT to do
 
 - Never use `#include` for `.typ` sub-files unless user sets it up.
-- Never invent functions (`#figure-caption`, `#code-block`, `#highlight`).
+- Never invent functions (`#figure-caption`, `#highlight`, `#code()`, `#code-block()`, `#image-wrapper()` — all dropped in 3.0.0).
 - Never use `#set page()` or `#set text()` directly — `report` show rule manages styling.
 - Never use `meeting` as integer — always string `"8"` not `8`.
-- Never guess `line-range`. Read the file first, verify complete logical unit.
-- Never use `#col()` for code >15 lines. Use full-width `#include-code()` instead.
+- Never guess `line-range`. Read the file first, verify complete logical unit, remember it's end-exclusive.
+- Never use `#col()` for code >15 lines. Use full-width `#code-figure()`/`#include-code()` instead.
 - Never use `outlined: false` on Lampiran heading (must appear in TOC).
+- Never write a bare code fence without `lang:` if it should be highlighted — see the aliasing note above for `php`/`blade`.
 - Hex colors: strip `#` prefix in prose (`C9963B` not `#C9963B`).
 - Angle brackets `<` in prose → Typst interprets as label. Use `(di bawah 768 px)` or `\<`.
-- `#include-code()` in `#rect[]` → escape: `\#include-code()`.
+- A literal `#include-code()`/`#img()` written as prose text (e.g. inside a `#rect[]` TODO placeholder) is still a real function call — escape it: `\#include-code()`.
 - Definition list: `/ term: description` — colon must be on same line as `/`.
 - Maths: `$O(1)$` inline. Only for algo/DS matkul, not PPW1.
