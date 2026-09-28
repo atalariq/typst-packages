@@ -4,17 +4,24 @@ set -euo pipefail
 
 REPO_DIR="$(cd "$(dirname "$0")" && pwd)"
 
-echo "=== Symlinking Typst packages..."
-mkdir -p ~/.local/share/typst/packages
-ln -sfn "$REPO_DIR/packages" ~/.local/share/typst/packages/atalariq
-echo "  → @atalariq/* packages linked to ~/.local/share/typst/packages/atalariq"
+# Typst resolves local packages from a platform-specific data directory.
+# macOS uses ~/Library/Application Support, everything else follows XDG.
+case "$(uname -s)" in
+  Darwin) TYPST_PKG_DIR="$HOME/Library/Application Support/typst/packages" ;;
+  *)      TYPST_PKG_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/typst/packages" ;;
+esac
 
-echo "=== Symlinking Hermes skills..."
-mkdir -p ~/.hermes/skills/productivity
-ln -sfn "$REPO_DIR/skills/typst-lab-report" ~/.hermes/skills/productivity/typst-lab-report
-echo "  → typst-lab-report skill linked to ~/.hermes/skills/productivity/typst-lab-report"
+echo "=== Symlinking Typst packages..."
+mkdir -p "$TYPST_PKG_DIR"
+ln -sfn "$REPO_DIR/packages" "$TYPST_PKG_DIR/atalariq"
+echo "  → @atalariq/* linked to $TYPST_PKG_DIR/atalariq"
+
+echo "=== Symlinking Agents skills..."
+mkdir -p ~/.agents/skills
+ln -sfn "$REPO_DIR/skills/typst-lab-report" ~/.agents/skills/typst-lab-report
+echo "  → typst-lab-report skill linked to ~/.agents/skills/typst-lab-report"
 
 echo ""
 echo "✓ Setup complete. Verify with:"
-echo "  typst compile packages/lab-report/1.0.0/examples/main.typ"
-echo "  ls -la ~/.hermes/skills/productivity/typst-lab-report"
+echo "  typst compile packages/lab-report/3.0.0/examples/full.typ"
+echo "  ls -la ~/.agents/skills/typst-lab-report"

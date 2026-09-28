@@ -1,0 +1,16 @@
+[package]
+name = "lab-report"
+version = "3.0.0"
+entrypoint = "lib.typ"
+authors = ["atalariq <https://github.com/atalariq>"]
+license = "MIT"
+description = "Modular lab report template for Indonesian academic reports (UGM Sekolah Vokasi)"
+repository = "https://github.com/atalariq/typst-packages"
+keywords = ["report", "lab", "laporan", "praktikum", "academic"]
+categories = ["report"]
+disciplines = ["engineering", "computer-science"]
+exclude = ["examples/"]
+
+[template]
+path = "examples"
+entrypoint = "full.typ"
