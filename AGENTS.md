@@ -8,6 +8,19 @@ compiles the current-version example of every package plus a scaffolded
 skill report on every push/PR — see `## Verification` for the same commands
 locally.
 
+## Change Control
+
+- `CONTEXT.md` — domain glossary (laprak, preset, course-specific config,
+  SCAFFOLD/PUZZLE/DRAFT, compile gate, vendoring). Read it for vocabulary
+  before using a term that might mean something specific here; update it
+  the moment a term gets resolved or challenged, not in a batch later.
+- `docs/adr/` — decisions that are hard to reverse, surprising without
+  context, or the result of a real trade-off (not every choice). Check
+  before "fixing" something that looks wrong but was deliberate.
+- Both maintained via the `domain-modeling` skill pattern (glossary +
+  lazy ADRs), not a heavier process — this is a personal, single-maintainer
+  repo.
+
 ## Local Setup (Required)
 
 Run `setup.sh` once to symlink both packages and skills. It resolves the
